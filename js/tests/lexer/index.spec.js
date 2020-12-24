@@ -385,6 +385,81 @@ const expectation3 = [
   }
 ]
 
+const expectation4 = [
+  {
+    literal: 'if',
+    type: 'IF'
+  },
+  {
+    literal: '(',
+    type: 'LEFT_PARANS'
+  },
+  {
+    literal: '5',
+    type: 'INTEGER'
+  },
+  {
+    literal: '<',
+    type: 'LT'
+  },
+  {
+    literal: '10',
+    type: 'INTEGER'
+  },
+  {
+    literal: ')',
+    type: 'RIGHT_PARENS'
+  },
+  {
+    literal: '{',
+    type: 'LEFT_BRACES'
+  },
+  {
+    literal: 'return',
+    type: 'RETURN'
+  },
+  {
+    literal: 'true',
+    type: 'TRUE'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '}',
+    type: 'RIGHT_BRACES'
+  },
+  {
+    literal: 'else',
+    type: 'ELSE'
+  },
+  {
+    literal: '{',
+    type: 'LEFT_BRACES'
+  },
+  {
+    literal: 'return',
+    type: 'RETURN'
+  },
+  {
+    literal: 'false',
+    type: 'FALSE'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '}',
+    type: 'RIGHT_BRACES'
+  },
+  {
+    literal: '',
+    type: 'EOF'
+  }
+]
+
 const tests = [
   ['basic assign and add expression', 'let x = 5 + 5;', expectation1],
   ['functions', `let five = 5;
@@ -400,7 +475,13 @@ const tests = [
                       };
                       let result = add(five, ten);
                       !-/*5;
-                      5 < 10 > 5;`, expectation3]
+                      5 < 10 > 5;`, expectation3],
+
+  ['if/else, boolean', `if ( 5 < 10) {
+                 return true;
+               } else {
+                 return false;
+               }`, expectation4]
 
 ]
 
