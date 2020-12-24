@@ -52,6 +52,12 @@ const isNumber = word => /^\d*/.test(word)
 const categoriseKeywordOrIdentifier = token => keywords[token] ? { type: keywords[token], literal: token } : isIdentifierOrConstant(token)
 
 const operators = {
+  '!': 'BANG',
+  '-': 'MINUS',
+  '*': 'ASTERIX',
+  '/': 'SLASH',
+  '<': 'LT',
+  '>': 'GT',
   '=': 'ASSIGN',
   '+': 'PLUS_OP',
   ';': 'SEMICOLON',

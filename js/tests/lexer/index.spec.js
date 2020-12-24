@@ -186,14 +186,221 @@ const expectation2 = [
   }
 ]
 
+const expectation3 = [
+  {
+    literal: 'let',
+    type: 'LET'
+  },
+  {
+    literal: 'five',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: '=',
+    type: 'ASSIGN'
+  },
+  {
+    literal: '5',
+    type: 'INTEGER'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: 'let',
+    type: 'LET'
+  },
+  {
+    literal: 'ten',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: '=',
+    type: 'ASSIGN'
+  },
+  {
+    literal: '10',
+    type: 'INTEGER'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: 'let',
+    type: 'LET'
+  },
+  {
+    literal: 'add',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: '=',
+    type: 'ASSIGN'
+  },
+  {
+    literal: 'fn',
+    type: 'FUNCTION'
+  },
+  {
+    literal: '(',
+    type: 'LEFT_PARANS'
+  },
+  {
+    literal: 'x',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: ',',
+    type: 'COMMA'
+  },
+  {
+    literal: 'y',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: ')',
+    type: 'RIGHT_PARENS'
+  },
+  {
+    literal: '{',
+    type: 'LEFT_BRACES'
+  },
+  {
+    literal: 'x',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: '+',
+    type: 'PLUS_OP'
+  },
+  {
+    literal: 'y',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '}',
+    type: 'RIGHT_BRACES'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: 'let',
+    type: 'LET'
+  },
+  {
+    literal: 'result',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: '=',
+    type: 'ASSIGN'
+  },
+  {
+    literal: 'add',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: '(',
+    type: 'LEFT_PARANS'
+  },
+  {
+    literal: 'five',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: ',',
+    type: 'COMMA'
+  },
+  {
+    literal: 'ten',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: ')',
+    type: 'RIGHT_PARENS'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '!',
+    type: 'BANG'
+  },
+  {
+    literal: '-',
+    type: 'MINUS'
+  },
+  {
+    literal: '/',
+    type: 'SLASH'
+  },
+  {
+    literal: '*',
+    type: 'ASTERIX'
+  },
+  {
+    literal: '5',
+    type: 'INTEGER'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '5',
+    type: 'INTEGER'
+  },
+  {
+    literal: '<',
+    type: 'LT'
+  },
+  {
+    literal: '10',
+    type: 'INTEGER'
+  },
+  {
+    literal: '>',
+    type: 'GT'
+  },
+  {
+    literal: '5',
+    type: 'INTEGER'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '',
+    type: 'EOF'
+  }
+]
+
 const tests = [
   ['basic assign and add expression', 'let x = 5 + 5;', expectation1],
-  ['functions now', `let five = 5;
+  ['functions', `let five = 5;
                      let ten = 10;
                      let add = fn(x, y) {
                        x + y;
                       };
-                      let result = add(five, ten);`, expectation2]
+                      let result = add(five, ten);`, expectation2],
+  ['more operators', `let five = 5;
+                     let ten = 10;
+                     let add = fn(x, y) {
+                       x + y;
+                      };
+                      let result = add(five, ten);
+                      !-/*5;
+                      5 < 10 > 5;`, expectation3]
 
 ]
 
