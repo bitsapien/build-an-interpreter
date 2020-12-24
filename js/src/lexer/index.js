@@ -4,6 +4,10 @@ const lexer = statements => {
   let idx = 0
   while (idx < chars.length) {
     const tokenAndPos = indentifyToken(statements[idx], idx, statements)
+    if (!tokenAndPos) {
+      const error = `Syntax error at character count: ${idx} starting with "${statements[idx]}"`
+      throw error
+    }
     if (tokenAndPos[0] !== -1) {
       tokens.push(tokenAndPos[0])
     }
@@ -34,7 +38,7 @@ const indentifyToken = (char, position, statements) => {
           return [categoriseKeywordOrIdentifier(statements.slice(position, nextPosition)), nextPosition]
         }
       }
-    } else if (char === ' ') {
+    } else if (char === ' ' || char === '\n' || char === '\t') {
       return [-1, nextPosition]
     }
   }
@@ -50,11 +54,17 @@ const categoriseKeywordOrIdentifier = token => keywords[token] ? { type: keyword
 const operators = {
   '=': 'ASSIGN',
   '+': 'PLUS_OP',
-  ';': 'SEMICOLON'
+  ';': 'SEMICOLON',
+  '{': 'LEFT_BRACES',
+  '}': 'RIGHT_BRACES',
+  '(': 'LEFT_PARANS',
+  ')': 'RIGHT_PARENS',
+  ',': 'COMMA'
 }
 
 const keywords = {
-  let: 'LET'
+  let: 'LET',
+  fn: 'FUNCTION'
 }
 
 module.exports = lexer
