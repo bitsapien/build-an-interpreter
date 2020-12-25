@@ -44,15 +44,17 @@ const indentifyToken = (char, position, statements) => {
     // peek forward for more
     const valid = isValidKeywordOrIdentifier(char)
     if (valid) {
-      while (nextPosition < statements.length) {
-        const nextChar = statements[nextPosition]
-        const nextValid = isValidKeywordOrIdentifier(nextChar) || isEQNOTEQ(nextChar)
+      let nextChar = statements[nextPosition]
+      let nextValid = isValidKeywordOrIdentifier(nextChar) || isEQNOTEQ(nextChar)
+      while (nextPosition < statements.length && nextValid) {
+        nextChar = statements[nextPosition]
+        nextValid = isValidKeywordOrIdentifier(nextChar) || isEQNOTEQ(nextChar)
         if (nextValid) {
           nextPosition = nextPosition + 1
-        } else {
-          return [categoriseKeywordOrIdentifier(statements.slice(position, nextPosition)), nextPosition]
         }
       }
+
+      return [categoriseKeywordOrIdentifier(statements.slice(position, nextPosition)), nextPosition]
     } else if (char === ' ' || char === '\n' || char === '\t') {
       return [-1, nextPosition]
     }

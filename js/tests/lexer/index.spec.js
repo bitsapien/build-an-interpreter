@@ -500,6 +500,21 @@ const expectation5 = [
   }
 ]
 
+const expectation6 = [
+  {
+    literal: 'let',
+    type: 'LET'
+  },
+  {
+    literal: 'x',
+    type: 'IDENTIFIER'
+  },
+  {
+    literal: '',
+    type: 'EOF'
+  }
+]
+
 const tests = [
   ['basic assign and add expression', 'let x = 5 + 5;', expectation1],
 
@@ -526,7 +541,9 @@ const tests = [
                         }`, expectation4],
 
   ['== and !=', `5 == 10;
-                 7 != 10;`, expectation5]
+                 7 != 10;`, expectation5],
+
+  ['expressions that end with keywords or identifiers', 'let x', expectation6]
 
 ]
 
