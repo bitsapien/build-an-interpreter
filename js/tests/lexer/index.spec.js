@@ -460,14 +460,56 @@ const expectation4 = [
   }
 ]
 
+
+const expectation5 = [
+  {
+    literal: '5',
+    type: 'INTEGER'
+  },
+  {
+    literal: '==',
+    type: 'EQ'
+  },
+  {
+    literal: '10',
+    type: 'INTEGER'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '7',
+    type: 'INTEGER'
+  },
+  {
+    literal: '!=',
+    type: 'NOT_EQ'
+  },
+  {
+    literal: '10',
+    type: 'INTEGER'
+  },
+  {
+    literal: ';',
+    type: 'SEMICOLON'
+  },
+  {
+    literal: '',
+    type: 'EOF'
+  }
+]
+
 const tests = [
   ['basic assign and add expression', 'let x = 5 + 5;', expectation1],
+
   ['functions', `let five = 5;
                      let ten = 10;
                      let add = fn(x, y) {
                        x + y;
                       };
                       let result = add(five, ten);`, expectation2],
+
   ['more operators', `let five = 5;
                      let ten = 10;
                      let add = fn(x, y) {
@@ -478,15 +520,18 @@ const tests = [
                       5 < 10 > 5;`, expectation3],
 
   ['if/else, boolean', `if ( 5 < 10) {
-                 return true;
-               } else {
-                 return false;
-               }`, expectation4]
+                           return true;
+                        } else {
+                          return false;
+                        }`, expectation4],
+
+  ['== and !=', `5 == 10;
+                 7 != 10;`, expectation5]
 
 ]
 
 describe('lexer fun', () => {
-  test.each(tests)('%s | %s', (description, input, expectation) => {
+  test.each(tests)('%s | %s', (_, input, expectation) => {
     expect(lexer(input)).toStrictEqual(expectation)
   })
 })

@@ -21,17 +21,32 @@ const indentifyToken = (char, position, statements) => {
   let nextPosition = position + 1
   const op = operators[char]
   if (op) {
-    return [{
-      type: op,
-      literal: char
-    }, nextPosition]
+    // checking for EQ and NOT_EQ
+    if (statements[nextPosition] === '=') {
+      if (char === '=') {
+        return [{
+          type: 'EQ',
+          literal: char + '='
+        }, (nextPosition + 1)]
+      } else if (char === '!') {
+        return [{
+          type: 'NOT_EQ',
+          literal: char + '='
+        }, (nextPosition + 1)]
+      }
+    } else {
+      return [{
+        type: op,
+        literal: char
+      }, nextPosition]
+    }
   } else {
     // peek forward for more
     const valid = isValidKeywordOrIdentifier(char)
     if (valid) {
       while (nextPosition < statements.length) {
         const nextChar = statements[nextPosition]
-        const nextValid = isValidKeywordOrIdentifier(nextChar)
+        const nextValid = isValidKeywordOrIdentifier(nextChar) || isEQNOTEQ(nextChar)
         if (nextValid) {
           nextPosition = nextPosition + 1
         } else {
@@ -45,6 +60,7 @@ const indentifyToken = (char, position, statements) => {
 }
 
 const isValidKeywordOrIdentifier = char => /[\w]/g.test(char)
+const isEQNOTEQ = char => char === '=' || char === '!'
 const isIdentifierOrConstant = word => /^[a-zA-Z]\w*/g.test(word) ? { type: 'IDENTIFIER', literal: word } : isNumber(word) ? { type: 'INTEGER', literal: word } : { type: 'GIBBERISH', literal: word }
 
 const isNumber = word => /^\d*/.test(word)
