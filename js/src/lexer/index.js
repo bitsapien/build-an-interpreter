@@ -13,7 +13,7 @@ const lexer = statements => {
     }
     idx = tokenAndPos[1]
   }
-  tokens.push({ type: 'EOF', literal: '' })
+  tokens.push(tokenizer('EOF'))
   return tokens
 }
 
@@ -24,50 +24,61 @@ const indentifyToken = (char, position, statements) => {
     // checking for EQ and NOT_EQ
     if (statements[nextPosition] === '=') {
       if (char === '=') {
-        return [{
-          type: 'EQ',
-          literal: char + '='
-        }, (nextPosition + 1)]
+        return [tokenizer('=='), (nextPosition + 1)]
       } else if (char === '!') {
-        return [{
-          type: 'NOT_EQ',
-          literal: char + '='
-        }, (nextPosition + 1)]
+        return [tokenizer('!='), (nextPosition + 1)]
       }
     } else {
-      return [{
-        type: op,
-        literal: char
-      }, nextPosition]
+      return [tokenizer(char), nextPosition]
     }
   } else {
     // peek forward for more
-    const valid = isValidKeywordOrIdentifier(char)
+    const valid = isValidIdentifier(char)
     if (valid) {
       let nextChar = statements[nextPosition]
-      let nextValid = isValidKeywordOrIdentifier(nextChar) || isEQNOTEQ(nextChar)
+      let nextValid = isValidIdentifier(nextChar) || isEQNOTEQ(nextChar)
       while (nextPosition < statements.length && nextValid) {
         nextChar = statements[nextPosition]
-        nextValid = isValidKeywordOrIdentifier(nextChar) || isEQNOTEQ(nextChar)
+        nextValid = isValidIdentifier(nextChar) || isEQNOTEQ(nextChar)
         if (nextValid) {
           nextPosition = nextPosition + 1
         }
       }
 
-      return [categoriseKeywordOrIdentifier(statements.slice(position, nextPosition)), nextPosition]
+      return [tokenizer(statements.slice(position, nextPosition)), nextPosition]
     } else if (char === ' ' || char === '\n' || char === '\t') {
       return [-1, nextPosition]
     }
   }
 }
 
-const isValidKeywordOrIdentifier = char => /[\w]/g.test(char)
+const isValidIdentifier = char => /[\w]/g.test(char)
 const isEQNOTEQ = char => char === '=' || char === '!'
-const isIdentifierOrConstant = word => /^[a-zA-Z]\w*/g.test(word) ? { type: 'IDENTIFIER', literal: word } : isNumber(word) ? { type: 'INTEGER', literal: word } : { type: 'GIBBERISH', literal: word }
-
 const isNumber = word => /^\d*/.test(word)
-
-const categoriseKeywordOrIdentifier = token => keywords[token] ? { type: keywords[token], literal: token } : isIdentifierOrConstant(token)
+const tokenizer = literal => {
+  const type = Object.assign(operators, keywords)[literal]
+  if (type) {
+    return {
+      literal: literal,
+      type: type
+    }
+  } else if (isNumber(literal)) {
+    return {
+      literal: literal,
+      type: 'INTEGER'
+    }
+  } else if (isValidIdentifier(literal)) {
+    return {
+      literal: literal,
+      type: 'IDENTIFIER'
+    }
+  } else {
+    return {
+      literal: literal,
+      type: 'Eh!?😕'
+    }
+  }
+}
 
 const operators = {
   '!': 'BANG',
@@ -83,7 +94,10 @@ const operators = {
   '}': 'RIGHT_BRACES',
   '(': 'LEFT_PARANS',
   ')': 'RIGHT_PARENS',
-  ',': 'COMMA'
+  ',': 'COMMA',
+  '==': 'EQ',
+  '!=': 'NOT_EQ',
+  EOF: 'EOF'
 }
 
 const keywords = {
