@@ -54,13 +54,19 @@ const indentifyToken = (char, position, statements) => {
 
 const isValidIdentifier = char => /[\w]/g.test(char)
 const isEQNOTEQ = char => char === '=' || char === '!'
-const isNumber = word => /^\d*/.test(word)
+const isNumber = word => /^\d/.test(word)
+const isEOF = literal => literal === 'EOF'
 const tokenizer = literal => {
   const type = Object.assign(operators, keywords)[literal]
   if (type) {
     return {
       literal: literal,
       type: type
+    }
+  } else if (isEOF(literal)) {
+    return {
+      literal: '',
+      type: 'EOF'
     }
   } else if (isNumber(literal)) {
     return {
@@ -96,8 +102,7 @@ const operators = {
   ')': 'RIGHT_PARENS',
   ',': 'COMMA',
   '==': 'EQ',
-  '!=': 'NOT_EQ',
-  EOF: 'EOF'
+  '!=': 'NOT_EQ'
 }
 
 const keywords = {
