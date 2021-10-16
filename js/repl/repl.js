@@ -1,5 +1,6 @@
 
 const lexer = require('../src/lexer')
+const { parseStatement } = require('../src/parser')
 const readline = require('readline')
 const rl = readline.createInterface({
   input: process.stdin,
@@ -15,8 +16,10 @@ rl.prompt()
 rl.on('line', (line) => {
   console.log(line.trim())
   try {
-    const output = lexer(line.trim())
-    console.log(output)
+    const tokens = lexer(line.trim())
+    const ast = parseStatement(tokens, 0)
+    console.log(tokens)
+    console.log(ast)
   } catch (err) {
     console.log(err)
   }
